@@ -9,27 +9,24 @@ class GameOfLife:
         self.cell_size = cell_size
 
         self.screen_size = width, height
-        global screen
         self.screen = pygame.display.set_mode(self.screen_size)
 
-        global cell_width
-        self.cell_width = self.width // self.cell_size
-        global cell_height
-        self.cell_height = self.height // self.cell_size
+        self.number_cells_width = self.width // self.cell_size
+        self.number_cells_height = self.height // self.cell_size
 
         self.speed = speed
+        self.cell_list = self.init_cell_list_rand()
 
 
-def draw_grid(self):
+    def draw_grid(self):
         for x in range(0, self.width, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color('black'),
-                (x, 0), (x, self.height))
+            pygame.draw.line(self.screen, pygame.Color('black'), (x, 0), (x, self.height))
         for y in range(0, self.height, self.cell_size):
             pygame.draw.line(self.screen, pygame.Color('black'),
                 (0, y), (self.width, y))
 
 
-def run(self):
+    def run(self):
         pygame.init()
         clock = pygame.time.Clock()
         pygame.display.set_caption('Game of Life')
@@ -46,25 +43,47 @@ def run(self):
         pygame.quit()
 
 
-def cell_list(self, randomize=False):
-    global cell_list
-    cell_list = [[random.randrange(0,2) for i in range(cell_height)] for j in range(cell_width)]
+    def init_cell_list_rand(self, randomize=False):
+        return [[random.randrange(0,2) for j in range(self.number_cells_width)] for i in range(self.number_cells_height)]
 
 
-def draw_cell_list(self, rects):
-    for i in range(0, len(cell_list())):
-        for j in range(0, len(cell_list[i])):
-            print(cell_list()[i][j], i, j)
-            if [i, j] == 0:
-                pygame.draw.rect(screen, [255, 255, 255], (250, 75, 250, 75));
-            else:
-                pygame.draw.rect(screen, [100, 100, 100], (250, 75, 250, 75));
-            #pygame.draw.rect(root , (255 * cell_list[i][j] % 256 , 0 , 0) , [i * 20 , j * 20 , 20 , 20])
+    def draw_cell_list(self):
+        for i in range(0, len(self.cell_list)):
+            for j in range(0, len(self.cell_list[i])):
+                rectangle = pygame.Rect(j*self.cell_size, i*self.cell_size, self.cell_size, self.cell_size)
+                if self.cell_list[i][j] == 0:
+                    pygame.draw.rect(self.screen, [255, 255, 255], rectangle)
+                else:
+                    pygame.draw.rect(self.screen, [100, 100, 100], rectangle)
+                #pygame.draw.rect(root , (255 * cell_list[i][j] % 256 , 0 , 0) , [i * 20 , j * 20 , 20 , 20])
 
 
+    def cords_neighbours(self, i, j):
+        self.cords_list = [i-1, j-1], [i-1, j], [i-1, j+1], [i, j-1], [i, j+1], [i+1, j-1], [i+1, j], [i+1, j+1]
+        return self.cords_list
 
+
+    def neighbours(self, i, j):
+        self.neighbours = [self.cell_list[i-1][j-1], self.cell_list[i-1][j], self.cell_list[i-1][j+1], self.cell_list[i][j-1], self.cell_list[i][j+1], self.cell_list[i+1][j-1], self.cell_list[i+1][j], self.cell_list[i+1][j+1]]
+        return self.neighbours
+
+
+    def change(self, neighbours):
+        count = 0
+        for neighbour in neighbours:
+            if neighbour == 1:
+                count = count + 1
+        if count == 2 or 3 and self.cell_list == 1:
+            self.cell_list = self.cell_list
+        else:
+            self.cell_list = 0
+        if count == 3 and self.cell_list == 0:
+            self.cell_list = 1
 
 
 if __name__ == '__main__':
     game = GameOfLife(320, 240, 20)
-    pygame.run()
+    game.run()
+
+
+
