@@ -50,17 +50,18 @@ class GameOfLife:
     def draw_cell_list(self):
         for i in range(0, len(self.cell_list)):
             for j in range(0, len(self.cell_list[i])):
+                #self.list = self.neighbours(i, j)
+                #self.change(list)
                 rectangle = pygame.Rect(j*self.cell_size, i*self.cell_size, self.cell_size, self.cell_size)
                 if self.cell_list[i][j] == 0:
                     pygame.draw.rect(self.screen, [255, 255, 255], rectangle)
                 else:
                     pygame.draw.rect(self.screen, [100, 100, 100], rectangle)
-                #pygame.draw.rect(root , (255 * cell_list[i][j] % 256 , 0 , 0) , [i * 20 , j * 20 , 20 , 20])
 
 
-    def cords_neighbours(self, i, j):
-        self.cords_list = [i-1, j-1], [i-1, j], [i-1, j+1], [i, j-1], [i, j+1], [i+1, j-1], [i+1, j], [i+1, j+1]
-        return self.cords_list
+    #def cords_neighbours(self, i, j):
+    #   self.cords_list = [i-1, j-1], [i-1, j], [i-1, j+1], [i, j-1], [i, j+1], [i+1, j-1], [i+1, j], [i+1, j+1]
+    #    return self.cords_list
 
 
     def neighbours(self, i, j):
@@ -74,7 +75,7 @@ class GameOfLife:
             if neighbour == 1:
                 count = count + 1
         if count == 2 or 3 and self.cell_list == 1:
-            self.cell_list = self.cell_list
+            self.cell_list = 1
         else:
             self.cell_list = 0
         if count == 3 and self.cell_list == 0:
@@ -84,6 +85,5 @@ class GameOfLife:
 if __name__ == '__main__':
     game = GameOfLife(320, 240, 20)
     game.run()
-
 
 
